@@ -7,7 +7,7 @@
     </div>
     <!-- ?Table  -->
     <div class="border-2 border-red-800">
-      <DataTable :data="data" class="display table">
+      <DataTable :data="data" class="table-zebra">
         <thead>
           <tr>
             <th>A</th>
@@ -41,5 +41,6 @@ export default {
 </script>
 
 <style scoped>
+@import "datatables.net-bs5";
 @import "datatables.net-dt";
 </style>
