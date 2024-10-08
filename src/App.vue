@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-screen h-screen border-2 border-blue-600"
+    class="flex flex-auto border-2 border-red-600 overflow-y-hidden"
     data-theme="corporate"
   >
     <!-- <Login></Login> -->

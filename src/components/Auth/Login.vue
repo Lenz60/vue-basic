@@ -92,7 +92,7 @@ export default {
     const login = () => {
       // checkForm(e);
       stateLoading.value = !stateLoading.value;
-      router.push({ name: "Dashboard", query: { email: email.value } });
+      router.push({ name: "Dashboard", query: { emailPayload: email.value } });
       // axios.get("http://localhost:5173/dashboard", { email: email.value });
     };
 
@@ -107,7 +107,6 @@ export default {
         this.login();
         return true;
       }
-
       if (!this.email) {
         this.errors.email.push("Email required");
         return false;

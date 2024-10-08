@@ -1,6 +1,11 @@
 <template>
   <div>
-    <h1>Hello {{ email }}</h1>
+    <!-- <h1>Hello {{ email }}</h1> -->
+    <p>
+      On the other hand the established organisation structure contributes to
+      the preparing and implementation of existing financial and administrative
+      conditions.
+    </p>
     <!-- <h1 class="text-lg text-black p-5"> -->
     <!-- Variable
       <p>
@@ -103,7 +108,7 @@ export default {
     const Mydata = "Hello world";
     const route = useRoute();
     // const email = ref(route.params.email);
-    console.log(props.email);
+    // console.log(props.email);
     // const HariPayload = props.Hari.splice(0, 1);
     let stateShowModal = ref(false);
     const months = ["January", "February", "March", "April", "Mei"];

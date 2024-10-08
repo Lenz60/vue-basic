@@ -4,12 +4,13 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../components/Dashboard.vue";
 import HelloWorld from "../components/HelloWorld.vue";
 import Login from "../components/Auth/Login.vue";
+import MainLayout from "../components/Layout/MainLayout.vue";
 
 const routes = [
   {
     path: "/",
     name: "home",
-    component: Login,
+    component: MainLayout,
     props: true,
     // props: (route) => ({ email: route.params.email }), // Enable props
   },
@@ -26,7 +27,7 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: Dashboard,
     // props: true, // Enable props
-    props: (route) => ({ email: route.query.email }),
+    props: (route) => ({ email: route.query.emailPayload }),
     // props: true,
   },
 ];
