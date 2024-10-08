@@ -13,7 +13,7 @@
         <!-- Sidebar content here -->
         <li @click="selectMenu('Dashboard')"><a>Dashboard</a></li>
         <li @click="selectMenu('Account')"><a>Account</a></li>
-        <li @click="selectMenu('Employee')"><a>Employee</a></li>
+        <li @click="selectMenu('University')"><a>University</a></li>
       </ul>
     </div>
   </div>
@@ -21,17 +21,19 @@
 
 <script>
 import { computed, onUpdated } from "vue";
-
+import { useRouter } from "vue-router";
 export default {
   props: ["Toggle"],
   setup(props) {
+    const router = useRouter();
     console.log(props.Toggle);
-    return {};
+    return { router };
   },
   methods: {
     selectMenu(menu) {
       // console.log(menu);
-      this.$emit("selected", menu);
+      this.router.push({ name: menu });
+      // this.$emit("selected", menu);
     },
   },
 };

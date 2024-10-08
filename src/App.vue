@@ -20,12 +20,12 @@
 <script>
 import { onMounted } from "vue";
 import Login from "./components/Auth/Login.vue";
-import Dashboard from "./components/Dashboard.vue";
+// import Dashboard from "./components/Dashboard.vue";
 import { RouterLink, RouterView } from "vue-router";
 export default {
   components: {
     Login,
-    Dashboard,
+    // Dashboard,
     RouterLink,
     RouterView,
   },
