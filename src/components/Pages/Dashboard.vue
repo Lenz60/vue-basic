@@ -93,7 +93,7 @@
 
 <script>
 import { ref } from "vue";
-import DashboardModal from "./Dashboard/Modal.vue";
+import DashboardModal from "../Dashboard/Modal.vue";
 import { useRoute } from "vue-router";
 export default {
   props: ["Hari", "Text", "Color", "Role", "email"],

@@ -1,5 +1,5 @@
 <template>
-  <div
+  <!-- <div
     class="flex flex-row border-2 border-blue-400 w-full h-full overflow-y-hidden"
   >
     <div class="border-2 border-black h-full">
@@ -18,21 +18,39 @@
         <div v-else></div>
       </Content>
     </div>
+  </div> -->
+
+  <div
+    class="flex flex-row border-2 border-blue-400 w-full h-full overflow-y-hidden"
+  >
+    <div class="border-2 border-black h-full">
+      <Sidebar
+        @selected="GetContent"
+        v-if="showSidebar"
+        :Toggle="sidebarClass"
+      />
+    </div>
+    <div class="border-2 border-yellow-500 h-screen w-full">
+      <Navbar @openSidebar="sidebarToggle" />
+      <RouterView></RouterView>
+    </div>
   </div>
 </template>
 
 <script>
+import { RouterView } from "vue-router";
 import Navbar from "./Partials/Navbar.vue";
 import Sidebar from "./Partials/Sidebar.vue";
 import Content from "./Partials/Content.vue";
 import { ref } from "vue";
-import Dashboard from "../Dashboard.vue";
+import Dashboard from "../Pages/Dashboard.vue";
 export default {
   components: {
     Navbar,
     Sidebar,
     Content,
     Dashboard,
+    RouterView,
   },
 
   setup() {
