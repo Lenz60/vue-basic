@@ -6,6 +6,8 @@
       v-model="account"
     />
     <h1>Account: {{ account }}</h1>
+    <h1>Account: {{ accountName }}</h1>
+    <h1>Account: {{ preAccountName }}</h1>
   </div>
 </template>
 
@@ -16,23 +18,18 @@ export default {
   setup() {
     const preAccountName = ref("John Doe");
     const account = ref("");
-
     watch(account, (newValue, oldValue) => {
       console.log(`Account changed from ${oldValue} to ${newValue}`);
     });
-
     const accountName = computed(() => {
       return preAccountName.value.toUpperCase();
     });
-
     onMounted(() => {
       console.log("Component has been mounted");
     });
-
     onUpdated(() => {
       console.log("Component has been updated");
     });
-
     onUnmounted(() => {
       console.log("Component has been unmounted");
     });
@@ -40,6 +37,7 @@ export default {
     return {
       account,
       accountName,
+      preAccountName,
     };
   },
 };
