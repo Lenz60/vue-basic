@@ -7,6 +7,7 @@ import Account from "../components/Pages/Account.vue";
 import HelloWorld from "../components/HelloWorld.vue";
 import Login from "../components/Auth/Login.vue";
 import MainLayout from "../components/Layout/MainLayout.vue";
+import LifeCycleHook from "../components/Tutorial/LifeCycleHook.vue";
 
 const routes = [
   {
@@ -37,6 +38,11 @@ const routes = [
     path: "/hello",
     name: "hello",
     component: HelloWorld,
+  },
+  {
+    path: "/lifecycle",
+    name: "lifecycle",
+    component: LifeCycleHook,
   },
   // {
   //   path: "/dashboard",
