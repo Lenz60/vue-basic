@@ -7,14 +7,15 @@
     </div>
     <!-- ?Table  -->
     <div class="border-2 border-red-800">
-      <DataTable :data="data" class="table-zebra">
+      <!-- <DataTable id="univTable" :data="data"   class="table-zebra">
         <thead>
           <tr>
-            <th>A</th>
-            <th>B</th>
+            <th scope="col">A</th>
+            <th scope="col">B</th>
           </tr>
         </thead>
-      </DataTable>
+      </DataTable> -->
+      <table id="univTable"></table>
     </div>
   </div>
 </template>
@@ -22,6 +23,8 @@
 <script>
 import DataTable from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
+import { onBeforeMount, onMounted } from "vue";
+import $ from "jquery";
 export default {
   components: {
     DataTable,
@@ -35,7 +38,20 @@ export default {
       [7, 8],
       [9, 10],
     ];
-    return { data };
+    let dataTableInstance = null;
+    onMounted(() => {
+      dataTableInstance = $("#univTable").DataTable({
+        data: data,
+        columns: [{ title: "A" }, { title: "B" }],
+        paging: false,
+      });
+    });
+    onBeforeMount(() => {
+      if (dataTableInstance) {
+        dataTableInstance.destroy(true);
+      }
+    });
+    return { data, dataTableInstance };
   },
 };
 </script>

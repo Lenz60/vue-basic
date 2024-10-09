@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="navbar bg-base-300">
+    <div class="navbar bg-primary-content rounded-sm">
       <div class="flex-none">
         <button
           @click="ToggleSidebar()"
@@ -10,7 +10,7 @@
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            class="inline-block h-5 w-5 stroke-current"
+            class="inline-block h-5 w-5 stroke-current text-neutral-content"
           >
             <path
               stroke-linecap="round"
@@ -21,7 +21,7 @@
           </svg>
         </button>
       </div>
-      <div class="flex-1">
+      <div class="flex-1 text-neutral-content">
         <a class="btn btn-ghost text-xl">daisyUI</a>
       </div>
       <div class="flex-none">
@@ -30,7 +30,7 @@
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            class="inline-block h-5 w-5 stroke-current"
+            class="text-neutral-content inline-block h-5 w-5 stroke-current"
           >
             <path
               stroke-linecap="round"
