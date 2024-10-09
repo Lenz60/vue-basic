@@ -29,7 +29,7 @@
 
   <!-- v vue-router Style routing -->
   <div
-    class="flex flex-row border-2 border-blue-400 w-full h-full overflow-y-hidden"
+    class="flex flex-row border-2 border-blue-400 w-full h-full overflow-y-scroll"
   >
     <div class="border-2 border-black h-full">
       <Sidebar v-if="showSidebar" />
