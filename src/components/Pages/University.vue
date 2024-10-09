@@ -1,62 +1,87 @@
 <template>
-  <div class="border-2 border-green-700 w-full h-full flex flex-col">
-    <div
-      class="items-center justify-center text-center border-2 border-blue-600"
-    >
-      <h1>Header</h1>
+  <div class="border-2 border-green-700 w-full h-full flex flex-col p-5">
+    <div class="border-2 border-blue-600 p-5">
+      <h1 class="text-xl font-medium">University Table</h1>
     </div>
     <!-- ?Table  -->
-    <div class="border-2 border-red-800">
-      <!-- <DataTable id="univTable" :data="data"   class="table-zebra">
-        <thead>
-          <tr>
-            <th scope="col">A</th>
-            <th scope="col">B</th>
-          </tr>
-        </thead>
-      </DataTable> -->
-      <table id="univTable"></table>
+
+    <div class="card shadow-xl border-2 border-red-800 p-5 m-5">
+      <div class="overflow-x-auto border-2 border-green-400">
+        <table class="table">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Id</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(data, index) in data2" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ data.id }}</td>
+              <td>{{ data.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import DataTable from "datatables.net-vue3";
-import DataTablesCore from "datatables.net";
-import { onBeforeMount, onMounted } from "vue";
-import $ from "jquery";
+import { onBeforeMount, onMounted, ref } from "vue";
+import axios from "axios";
 export default {
-  components: {
-    DataTable,
-  },
+  components: {},
   setup() {
-    DataTable.use(DataTablesCore);
-    const data = [
-      [1, 2],
-      [3, 4],
-      [5, 6],
-      [7, 8],
-      [9, 10],
-    ];
+    const data2 = ref([]);
+    const data3 = ref([]);
     let dataTableInstance = null;
-    onMounted(() => {
-      dataTableInstance = $("#univTable").DataTable({
-        data: data,
-        columns: [{ title: "A" }, { title: "B" }],
-        paging: false,
-      });
-    });
-    onBeforeMount(() => {
-      if (dataTableInstance) {
-        dataTableInstance.destroy(true);
+    let dataTableInstance2 = null;
+
+    onMounted(async () => {
+      try {
+        const response = await axios.get(
+          "https://localhost:7117/api/University"
+        );
+        // console.log(response.data);
+        data2.value = response.data.data;
+      } catch (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error(
+            "Error fetching data:",
+            error.response.status,
+            error.response.data
+          );
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error(
+            "Error fetching data: No response received",
+            error.request
+          );
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error fetching data:", error.message);
+        }
       }
     });
-    return { data, dataTableInstance };
+    // onBeforeMount(() => {
+    //   if (dataTableInstance) {
+    //     dataTableInstance.destroy(true);
+    //   }
+    // });
+    return { data2, data3 };
   },
 };
 </script>
 
 <style scoped>
+.dt-paging-button {
+  background: red;
+}
 @import "datatables.net-bs5";
 @import "datatables.net-dt";
 </style>
