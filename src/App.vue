@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-auto border-2 border-red-600 overflow-y-hidden"
+    class="flex flex-auto overflow-y-hidden bg-base-100"
     data-theme="corporate"
   >
     <!-- <Login></Login> -->
