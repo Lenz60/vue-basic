@@ -3,42 +3,20 @@
     <div class="navbar bg-primary-content rounded-sm">
       <div class="flex-none">
         <button
-          @click="ToggleSidebar()"
+          @click="ToggleSidebar"
           class="btn btn-square btn-ghost drawer-button"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block h-5 w-5 stroke-current text-neutral-content"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>
-          </svg>
+          <Bars3BottomLeftIcon
+            class="text-neutral-content h-6 w-6"
+          ></Bars3BottomLeftIcon>
         </button>
       </div>
-      <div class="flex-1 text-neutral-content">
-        <!-- <a class="btn btn-ghost text-xl">daisyUI</a> -->
-      </div>
+      <div class="flex-1 text-neutral-content"></div>
       <div class="flex-none">
-        <button class="btn btn-square btn-ghost">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="text-neutral-content inline-block h-5 w-5 stroke-current"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-            ></path>
-          </svg>
+        <button class="btn btn-square btn-ghost" @click="Logout">
+          <ArrowRightStartOnRectangleIcon
+            class="text-neutral-content h-6 w-6"
+          ></ArrowRightStartOnRectangleIcon>
         </button>
       </div>
     </div>
@@ -46,16 +24,55 @@
 </template>
 
 <script>
+import {
+  ArrowRightStartOnRectangleIcon,
+  Bars3BottomLeftIcon,
+} from "@heroicons/vue/16/solid";
+import Swal from "sweetalert2";
+import "animate.css";
+
 export default {
-  setup() {
-    return {};
+  components: {
+    ArrowRightStartOnRectangleIcon,
+    Bars3BottomLeftIcon,
   },
   methods: {
     ToggleSidebar() {
-      this.$emit("openSidebar", "drawer-open");
+      this.$emit("openSidebar");
+    },
+    Logout() {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "This will log you out of the system",
+        icon: "warning",
+        reverseButtons: true,
+        showCancelButton: true,
+        confirmButtonColor: "#1C4E80",
+        cancelButtonColor: "#FF5724",
+        confirmButtonText: "Yes",
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `,
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `,
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.removeItem("token");
+          this.$router.push("/login");
+        }
+      });
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>

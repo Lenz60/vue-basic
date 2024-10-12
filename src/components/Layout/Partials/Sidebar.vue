@@ -1,5 +1,5 @@
 <template>
-  <div class="drawer drawer-open">
+  <div class="drawer shadow-xl" :class="Animation">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-side">
       <label
@@ -7,72 +7,64 @@
         aria-label="close sidebar"
         class="drawer-overlay"
       ></label>
-      <ul
-        class="menu bg-neutral-content text-base-content h-full w-80 pt-10 border-2 border-green-500"
-      >
-        <div class="border-2 border-blue-600 p-2 flex flex-row">
-          <div class="avatar border-2 border-green-500">
+      <ul class="menu bg-neutral-content text-base-content h-full w-80 pt-10">
+        <div class="p-2 flex flex-row">
+          <div class="avatar">
             <div
-              class="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2"
+              class="ring-secondary ring-offset-base-100 w-10 rounded-full ring ring-offset-2"
             >
-              <img
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-              />
+              <img src="https://i.pravatar.cc/40" />
             </div>
           </div>
-          <div class="p-2">
-            <h2 class="text-lg font-bold">Admin</h2>
-            <p class="text-sm"></p>
+          <div class="p-1">
+            <h2 class="text-lg ml-2 font-bold">{{ Name }}</h2>
           </div>
         </div>
-        <div class="border-2 border-green-500 mt-12 p-2 text-primary-content">
-          <li
-            @click="selectMenu('Dashboard')"
-            class="border-2 border-green-600"
-          >
-            <div class="flex flex-row">
-              <PresentationChartLineIcon
-                class="border-2 border-yellow-400 w-7 h-fit hover:bg-none"
-              />
+        <div class="mt-12 p-2 text-primary-content">
+          <li @click="selectMenu('Dashboard')" class="text-primary-content">
+            <a
+              class="flex flex-row"
+              :class="{ active: route.path === '/dashboard' }"
+            >
+              <PresentationChartLineIcon class="w-7 h-fit hover:bg-none" />
               <a>Dashboard</a>
-            </div>
+            </a>
           </li>
-          <li @click="selectMenu('Account')" class="border-2 border-green-600">
-            <div class="flex flex-row">
-              <UsersIcon
-                class="border-2 border-yellow-400 w-7 h-fit hover:bg-none"
-              />
+          <li @click="selectMenu('Account')" class="">
+            <a
+              class="flex flex-row"
+              :class="{ active: route.path === '/account' }"
+            >
+              <UsersIcon class="w-7 h-fit hover:bg-none" />
               <a>Account</a>
-            </div>
+            </a>
           </li>
-          <li
-            @click="selectMenu('University')"
-            class="border-2 border-green-600"
-          >
-            <div class="flex flex-row">
-              <BuildingLibraryIcon
-                class="border-2 border-yellow-400 w-7 h-fit hover:bg-none"
-              />
+          <li @click="selectMenu('University')" class="">
+            <a
+              class="flex flex-row"
+              :class="{ active: route.path === '/university' }"
+            >
+              <BuildingLibraryIcon class="w-7 h-fit hover:bg-none" />
               <a>University</a>
-            </div>
+            </a>
           </li>
         </div>
-        <!-- Sidebar content here -->
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, onUpdated } from "vue";
-import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import {
   BuildingLibraryIcon,
   PresentationChartLineIcon,
   UsersIcon,
 } from "@heroicons/vue/16/solid";
+
 export default {
-  props: ["Toggle"],
+  props: ["Name", "Animation"],
   components: {
     PresentationChartLineIcon,
     BuildingLibraryIcon,
@@ -80,18 +72,15 @@ export default {
   },
   setup(props) {
     const router = useRouter();
-    console.log(props.Toggle);
-    return { router };
+    const route = useRoute();
+    const isActive = (href) => {
+      return computed(() => route.path === href);
+    };
+    return { router, isActive, route };
   },
   methods: {
     selectMenu(menu) {
-      // console.log(menu);
-
-      // Vue Route style routing
       this.router.push({ name: menu });
-
-      // Emit Style routing
-      // this.$emit("selected", menu);
     },
   },
 };

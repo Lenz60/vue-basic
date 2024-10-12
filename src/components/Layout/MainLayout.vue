@@ -1,40 +1,16 @@
 <template>
-  <!-- v Emit style routing -->
-  <!-- <div
-    class="flex flex-row border-2 border-blue-400 w-full h-full overflow-y-hidden"
-  >
-    <div class="border-2 border-black h-full">
+  <div class="flex flex-row w-full h-screen overflow-y-scroll flex-grow">
+    <div>
       <Sidebar
-        @selected="GetContent"
-        v-if="showSidebar"
-        :Toggle="sidebarClass"
+        :Name="dataName"
+        :Animation="
+          showSidebar
+            ? 'animate__fadeInLeft drawer-open'
+            : 'animate__fadeOutLeft '
+        "
       />
     </div>
-    <div class="border-2 border-yellow-500 h-screen w-full">
-      <Navbar @openSidebar="sidebarToggle" />
-      <Content class="h-full">
-        <div v-if="ContentContext == 'Dashboard'">
-          <Dashboard />
-        </div>
-        <div v-else-if="ContentContext == 'Account'">
-          <Account />
-        </div>
-        <div v-else-if="ContentContext == 'University'">
-          <University />
-        </div>
-        <div v-else></div>
-      </Content>
-    </div>
-  </div> -->
-
-  <!-- v vue-router Style routing -->
-  <div
-    class="flex flex-row border-2 border-blue-400 w-full h-full overflow-y-scroll"
-  >
-    <div class="border-2 border-black h-full">
-      <Sidebar v-if="showSidebar" />
-    </div>
-    <div class="border-2 border-yellow-500 h-screen w-full">
+    <div class="w-full">
       <Navbar @openSidebar="sidebarToggle" />
       <RouterView></RouterView>
     </div>
@@ -42,50 +18,66 @@
 </template>
 
 <script>
-import { RouterView } from "vue-router";
+import { RouterView, useRouter } from "vue-router";
 import Navbar from "./Partials/Navbar.vue";
 import Sidebar from "./Partials/Sidebar.vue";
-import Content from "./Partials/Content.vue";
-import { ref } from "vue";
-import Dashboard from "../Pages/Dashboard.vue";
-import Account from "../Pages/Account.vue";
-import University from "../Pages/University.vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+// import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+
 export default {
   components: {
     Navbar,
     Sidebar,
-    Content,
-    Dashboard,
-    Account,
-    University,
     RouterView,
   },
 
   setup() {
-    const showSidebar = ref(false);
-    const sidebarClass = ref("");
-    const ContentContext = ref("");
-    return { showSidebar, ContentContext, sidebarClass };
-  },
-  methods: {
-    sidebarToggle(e) {
-      this.showSidebar = !this.showSidebar;
+    const showSidebar = ref(true);
+    const router = useRouter();
+    const decodedToken = ref(null);
+    const dataName = ref(null);
 
-      // Emit style routing
-      if (this.showSidebar) {
-        this.sidebarClass = e;
-      } else {
-        this.sidebarClass = "";
+    const token = localStorage.getItem("token");
+
+    const validateToken = async () => {
+      try {
+        await axios.post("https://localhost:7117/api/Account/Validate", {
+          token: token,
+        });
+        decodedToken.value = jwtDecode(token);
+        dataName.value = decodedToken.value.name;
+      } catch (error) {
+        if (error.response) {
+          if (error.response.data.errors) {
+            alert(error.response.data.errors.token[0]);
+          } else {
+            alert(error.response.data.title);
+          }
+        } else {
+          alert("An error occurred: " + error.message);
+        }
+        router.push({ name: "Login" });
+        localStorage.removeItem("token");
       }
-      //   console.log(this.sidebarClass);
-      //   console.log(e);
-    },
-    GetContent(menu) {
-      console.log(menu);
-      this.ContentContext = menu;
-    },
+    };
+
+    onMounted(() => {
+      if (!token) {
+        router.push({ name: "Login" });
+      } else {
+        validateToken();
+      }
+    });
+
+    const sidebarToggle = () => {
+      showSidebar.value = !showSidebar.value;
+    };
+
+    return { showSidebar, decodedToken, sidebarToggle, dataName };
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
