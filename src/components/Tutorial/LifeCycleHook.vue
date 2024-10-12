@@ -16,6 +16,7 @@ import { onMounted, onUpdated, onUnmounted, ref, watch, computed } from "vue";
 
 export default {
   setup() {
+    console.log("this is setup");
     const preAccountName = ref("John Doe");
     const account = ref("");
     watch(account, (newValue, oldValue) => {
