@@ -73,6 +73,7 @@ import { RouterLink, RouterView } from "vue-router";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
+import Swal from "sweetalert2";
 // import router from "../../router";
 export default {
   components: {
@@ -89,10 +90,43 @@ export default {
     let email = ref("");
     let password = ref("");
     const stateLoading = ref(false);
-    const login = () => {
+    const login = async () => {
       // checkForm(e);
       stateLoading.value = !stateLoading.value;
-      router.push({ name: "Dashboard", query: { emailPayload: email.value } });
+      try {
+        const response = await axios
+          .post("https://localhost:7117/api/Account/Login", {
+            email: email.value,
+            password: password.value,
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.status == 200) {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Signed in successfully",
+              });
+              // alert("LoggedIn");
+              localStorage.setItem("token", response.data.data);
+              router.push({ name: "Dashboard" });
+            }
+          });
+      } catch (error) {
+        alert(error.response.data.message);
+        console.error("Error adding data:", error);
+      }
+      stateLoading.value = !stateLoading.value;
       // axios.get("http://localhost:5173/dashboard", { email: email.value });
     };
 
