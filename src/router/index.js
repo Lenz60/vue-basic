@@ -10,12 +10,17 @@ import MainLayout from "../components/Layout/MainLayout.vue";
 import LifeCycleHook from "../components/Tutorial/LifeCycleHook.vue";
 
 const routes = [
+  // {
+  //   path: "/",
+  //   name: "home",
+  //   component: Login,
+  //   props: true,
+  //   // props: (route) => ({ email: route.params.email }), // Enable props
+  // },
   {
     path: "/",
-    name: "home",
+    name: "Index",
     component: MainLayout,
-    props: true,
-    // props: (route) => ({ email: route.params.email }), // Enable props
     children: [
       {
         path: "/dashboard",
@@ -38,6 +43,11 @@ const routes = [
     path: "/hello",
     name: "hello",
     component: HelloWorld,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
   },
   {
     path: "/lifecycle",
