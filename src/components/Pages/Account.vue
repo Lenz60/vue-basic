@@ -1,14 +1,19 @@
 <template>
-  <div class="border-2 border-green-700 w-full h-full flex flex-col p-5">
-    <div class="border-2 border-blue-600 p-5">
+  <div class="flex flex-col p-5">
+    <div class="p-5">
       <h1 class="text-xl font-medium">Account Table</h1>
     </div>
     <!-- ?Table  -->
 
-    <div class="card shadow-xl border-2 border-red-800 p-5 m-5">
-      <div class="overflow-x-auto border-2 border-green-400">
-        <table class="table">
-          <!-- head -->
+    <div class="card shadow-xl p-5 m-5">
+      <Tables
+        :Datas="data2"
+        Context="Account"
+        @refresh-table="refreshTable"
+      ></Tables>
+      <!-- <div class="overflow-x-auto border-2 border-green-400"> -->
+      <!-- <table class="table">
+        
           <thead>
             <tr>
               <th>#</th>
@@ -23,28 +28,59 @@
               <td>{{ data.name }}</td>
             </tr>
           </tbody>
-        </table>
-      </div>
+        </table> -->
+      <!-- </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onBeforeMount, onUnmounted, onMounted, ref } from "vue";
+import Tables from "./Partials/Tables.vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+import { jwtDecode } from "jwt-decode";
 export default {
-  components: {},
+  components: { Tables },
   setup() {
     const data2 = ref([]);
     const data3 = ref([]);
     let dataTableInstance = null;
     let dataTableInstance2 = null;
+    const router = useRouter();
+    const token = localStorage.getItem("token");
+    const decodedToken = ref(null);
 
-    onMounted(async () => {
+    const validateToken = async () => {
       try {
-        const response = await axios.get(
-          "https://localhost:7117/api/University"
-        );
+        await axios.post("https://localhost:7117/api/Account/Validate", {
+          token: token,
+        });
+        decodedToken.value = jwtDecode(token);
+      } catch (error) {
+        if (error.response) {
+          if (error.response.data.errors) {
+            // console.log(error.response.data.errors.token[0]);
+            alert(error.response.data.errors.token[0]);
+          } else {
+            alert(error.response.data.title);
+          }
+        } else {
+          alert("An error occurred: " + error.message);
+        }
+        // console.log(error.response.data);
+        router.push({ name: "Login" });
+        localStorage.removeItem("token");
+      }
+    };
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("https://localhost:7117/api/Account", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         // console.log(response.data);
         data2.value = response.data.data;
       } catch (error) {
@@ -67,13 +103,28 @@ export default {
           console.error("Error fetching data:", error.message);
         }
       }
+    };
+
+    onUnmounted(() => {
+      console.log("Component has been unmounted");
     });
+
+    onMounted(async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push({ name: "Login" });
+      } else {
+        validateToken();
+        fetchData();
+      }
+    });
+
     // onBeforeMount(() => {
     //   if (dataTableInstance) {
     //     dataTableInstance.destroy(true);
     //   }
     // });
-    return { data2, data3 };
+    return { data2, data3, router, decodedToken };
   },
 };
 </script>
